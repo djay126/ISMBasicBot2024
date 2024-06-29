@@ -1,0 +1,14 @@
+{
+  "name": "ismbasicbot2024",
+  "version": "1.0.0",
+  "description": "Basic bot for ISM project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "botbuilder": "^4.15.0",
+    "dotenv": "^10.0.0",
+    "restify": "^8.5.1"
+  }
+}
