@@ -1,0 +1,29 @@
+const restify = require('restify');
+const { BotFrameworkAdapter, ConversationState, MemoryStorage } = require('botbuilder');
+const { EchoBot } = require('./bot');
+
+// Create adapter.
+const adapter = new BotFrameworkAdapter({
+    appId: process.env.MicrosoftAppId,
+    appPassword: process.env.MicrosoftAppPassword
+});
+
+// Create conversation and user state with in-memory storage provider.
+const memoryStorage = new MemoryStorage();
+const conversationState = new ConversationState(memoryStorage);
+
+// Create the main dialog.
+const bot = new EchoBot(conversationState);
+
+// Create HTTP server
+const server = restify.createServer();
+server.listen(process.env.port || process.env.PORT || 3978, () => {
+    console.log(`\n${server.name} listening to ${server.url}`);
+});
+
+// Listen for incoming requests.
+server.post('/api/messages', (req, res) => {
+    adapter.processActivity(req, res, async (context) => {
+        await bot.run(context);
+    });
+});
